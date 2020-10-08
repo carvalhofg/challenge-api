@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,7 +31,7 @@ public class ServiceOrder {
 	private String issue;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus = OrderStatus.REGISTERED;
-    @OneToMany(mappedBy = "serviceOrder")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "serviceOrder")
     private List<OrderFollowUp> orderFollowUps = new ArrayList<>();
 
     @Override

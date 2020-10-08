@@ -21,6 +21,7 @@ import com.api.challenge.challengeapi.repository.ResponsibleRepository;
 import com.api.challenge.challengeapi.repository.ServiceOrderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -56,6 +58,11 @@ public class SeviceOrderController {
             return DetailServiceOrderDTO.convert(serviceOrders);
         } else {
             List<ServiceOrder> serviceOrders = serviceOrderRepository.findByResponsibleName(responsibleName);
+            if(serviceOrders.isEmpty()) {
+                throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "ORDER NOT FOUND"
+              );
+            }
             return DetailServiceOrderDTO.convert(serviceOrders);
         }
     }
