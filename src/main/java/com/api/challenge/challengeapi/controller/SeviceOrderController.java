@@ -4,9 +4,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import com.api.challenge.challengeapi.config.security.TokenService;
 import com.api.challenge.challengeapi.dto.DetailServiceOrderDTO;
 import com.api.challenge.challengeapi.dto.OrderFollowUpDTO;
 import com.api.challenge.challengeapi.dto.ServiceOrderDTO;
@@ -14,6 +16,7 @@ import com.api.challenge.challengeapi.form.OrderFollowUpForm;
 import com.api.challenge.challengeapi.form.ServiceOrderForm;
 import com.api.challenge.challengeapi.form.UpdateServiceOrderForm;
 import com.api.challenge.challengeapi.model.OrderFollowUp;
+import com.api.challenge.challengeapi.model.Responsible;
 import com.api.challenge.challengeapi.model.ServiceOrder;
 import com.api.challenge.challengeapi.repository.CustomerRepository;
 import com.api.challenge.challengeapi.repository.OrderFollowUpRepository;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -50,20 +54,31 @@ public class SeviceOrderController {
     @Autowired
     private OrderFollowUpRepository orderFollowUpRepository;
 
-    @GetMapping
-    public List<DetailServiceOrderDTO> list(String responsibleName) {
+    @Autowired
+    private TokenService tokenService;
 
-        if(responsibleName == null) {
-            List<ServiceOrder> serviceOrders = serviceOrderRepository.findAll();
+    @GetMapping("/all")
+    public List<DetailServiceOrderDTO> list() {
+ 
+        List<ServiceOrder> serviceOrders = serviceOrderRepository.findAll();
+        return DetailServiceOrderDTO.convert(serviceOrders);
+
+    }
+
+    @GetMapping
+    public List<DetailServiceOrderDTO> listByResponsible(@RequestParam String responsibleName, HttpServletRequest request) {
+        String token = tokenService.retrieveToken(request);
+        Long idUsuario = tokenService.getUserId(token);
+        String authenticatedResponsible = responsibleRepository.getOne(idUsuario).getName();
+
+        if(authenticatedResponsible.equals(responsibleName)){
+            List<ServiceOrder> serviceOrders = serviceOrderRepository.findByResponsibleName(responsibleName);
+
             return DetailServiceOrderDTO.convert(serviceOrders);
         } else {
-            List<ServiceOrder> serviceOrders = serviceOrderRepository.findByResponsibleName(responsibleName);
-            if(serviceOrders.isEmpty()) {
                 throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "ORDER NOT FOUND"
+                HttpStatus.FORBIDDEN, "NO PERMISSION"
               );
-            }
-            return DetailServiceOrderDTO.convert(serviceOrders);
         }
     }
 
@@ -91,12 +106,21 @@ public class SeviceOrderController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DetailServiceOrderDTO> updateServiceOrder(@PathVariable Long id, @RequestBody @Valid UpdateServiceOrderForm form) {
+    public ResponseEntity<DetailServiceOrderDTO> updateServiceOrder(@PathVariable Long id, @RequestBody @Valid UpdateServiceOrderForm form, HttpServletRequest request) {
         Optional<ServiceOrder> optional = serviceOrderRepository.findById(id);
+        String token = tokenService.retrieveToken(request);
+        Long idUsuario = tokenService.getUserId(token);
+        String authenticatedResponsible = responsibleRepository.getOne(idUsuario).getName();
+        String responsibleFromOrder = serviceOrderRepository.getOne(id).getResponsible().getName();
 
-        if(optional.isPresent()) {
+        if(optional.isPresent() && (authenticatedResponsible.equals(responsibleFromOrder))) {
             ServiceOrder serviceOrder = form.update(id, serviceOrderRepository);
             return ResponseEntity.ok(new DetailServiceOrderDTO(serviceOrder));
+        }
+        else if(optional.isPresent() && (!authenticatedResponsible.equals(responsibleFromOrder))) {
+            throw new ResponseStatusException(
+                HttpStatus.FORBIDDEN, "NO PERMISSION"
+              ); 
         }
 
         return ResponseEntity.notFound().build();
@@ -104,12 +128,20 @@ public class SeviceOrderController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> remove(@PathVariable Long id) {
+    public ResponseEntity<?> remove(@PathVariable Long id, HttpServletRequest request) {
         Optional<ServiceOrder> optional = serviceOrderRepository.findById(id);
+        String token = tokenService.retrieveToken(request);
+        Long idUsuario = tokenService.getUserId(token);
+        String authenticatedResponsible = responsibleRepository.getOne(idUsuario).getName();
+        String responsibleFromOrder = serviceOrderRepository.getOne(id).getResponsible().getName();
 
-        if(optional.isPresent()) {
+        if(optional.isPresent() && (authenticatedResponsible.equals(responsibleFromOrder))) {
             serviceOrderRepository.deleteById(id);
             return ResponseEntity.ok().build();
+        }
+        else if(optional.isPresent() && (!authenticatedResponsible.equals(responsibleFromOrder))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body("No Permission");  
         }
         
         return ResponseEntity.notFound().build();   

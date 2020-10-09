@@ -1,20 +1,37 @@
 package com.api.challenge.challengeapi.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class Responsible {
+public class Responsible implements UserDetails{
+
+	private static final long serialVersionUID = 1L;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    private String speciality; 
+	private String speciality; 
+	
+	private String usrName;
+
+	private String pass;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Profile> profiles = new ArrayList<>();
     
     @Override
 	public int hashCode() {
@@ -65,6 +82,59 @@ public class Responsible {
 		this.speciality = speciality;
 	}
 
-	
-    
+	public String getUsrName() {
+		return usrName;
+	}
+
+	public void setUsrName(String usrName) {
+		this.usrName = usrName;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.profiles;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.pass;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.usrName;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
