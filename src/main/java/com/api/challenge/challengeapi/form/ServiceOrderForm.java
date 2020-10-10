@@ -11,9 +11,6 @@ import com.api.challenge.challengeapi.repository.ResponsibleRepository;
 
 public class ServiceOrderForm {
 
-    
-    private ServiceOrder serviceOrder;
-
     @NotNull @NotEmpty
     private String customerName;
 
@@ -28,13 +25,6 @@ public class ServiceOrderForm {
     @NotNull @NotEmpty
     private String issue;
 
-    public ServiceOrder getServiceOrder() {
-        return serviceOrder;
-    }
-
-    public void setServiceOrder(ServiceOrder serviceOrder) {
-        this.serviceOrder = serviceOrder;
-    }
 
     public String getCustomerName() {
         return customerName;
