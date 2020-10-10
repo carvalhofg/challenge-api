@@ -33,7 +33,7 @@ Duas Ordens de Serviço já estão cadastradas no banco.
 Existem duas tabelas de usuários, uma chamada de Responsible, contendo os responsáveis pela ordem de serviço,
 e outra chamada Customer, relacionada aos clientes.
 
-Existem dois Responsáveis cadastrados -> Responsible1 e Responsible2.
+Existem dois Responsáveis cadastrados -> Responsible1 e Responsible2.</br>
 Existem dois Clientes cadastrados -> Customer1 e Customer2.
 
 ### Mapeamento dos Endpoints
