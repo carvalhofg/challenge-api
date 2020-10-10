@@ -1,8 +1,5 @@
 package com.api.challenge.challengeapi.form;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import com.api.challenge.challengeapi.model.OrderStatus;
 import com.api.challenge.challengeapi.model.ServiceOrder;
 import com.api.challenge.challengeapi.repository.ServiceOrderRepository;

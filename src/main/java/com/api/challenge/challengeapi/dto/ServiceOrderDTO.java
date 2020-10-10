@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import com.api.challenge.challengeapi.model.Customer;
 import com.api.challenge.challengeapi.model.Responsible;
 import com.api.challenge.challengeapi.model.ServiceOrder;
-import com.api.challenge.challengeapi.repository.CustomerRepository;
 
 public class ServiceOrderDTO {
 

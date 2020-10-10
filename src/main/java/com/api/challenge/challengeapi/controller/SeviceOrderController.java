@@ -16,7 +16,6 @@ import com.api.challenge.challengeapi.form.OrderFollowUpForm;
 import com.api.challenge.challengeapi.form.ServiceOrderForm;
 import com.api.challenge.challengeapi.form.UpdateServiceOrderForm;
 import com.api.challenge.challengeapi.model.OrderFollowUp;
-import com.api.challenge.challengeapi.model.Responsible;
 import com.api.challenge.challengeapi.model.ServiceOrder;
 import com.api.challenge.challengeapi.repository.CustomerRepository;
 import com.api.challenge.challengeapi.repository.OrderFollowUpRepository;
@@ -100,7 +99,7 @@ public class SeviceOrderController {
     @ApiOperation(value = "Create a Service Order FollowUp")
     @PostMapping("/{idServiceOrder}/followup")
     @Transactional
-    public ResponseEntity<OrderFollowUpDTO> responder(@PathVariable Long idServiceOrder, @RequestBody @Valid OrderFollowUpForm form, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<OrderFollowUpDTO> createFollowUp(@PathVariable Long idServiceOrder, @RequestBody @Valid OrderFollowUpForm form, UriComponentsBuilder uriBuilder) {
         ServiceOrder serviceOrder = serviceOrderRepository.getOne(idServiceOrder);
         OrderFollowUp orderFollowUp = form.convert(serviceOrder);
 

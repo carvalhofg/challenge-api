@@ -12,7 +12,7 @@
 	<artifactId>challenge-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>challenge-api</name>
-	<description>Demo project for Spring Boot</description>
+	<description>API com SpringBoot</description>
 
 	<properties>
 		<java.version>11</java.version>

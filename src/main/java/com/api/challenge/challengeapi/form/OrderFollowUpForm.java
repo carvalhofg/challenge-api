@@ -1,7 +1,5 @@
 package com.api.challenge.challengeapi.form;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
