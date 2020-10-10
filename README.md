@@ -97,6 +97,7 @@ O enpoint GET /service-order retornar as ordens apenas referentes ao responsáve
 
 O endpoint GET /service-order/all é publico, criado apenas para fins práticos. (Poderia ser implementado um perfil de Admin onde apenas este conseguiria ter acesso a esse endpoint)
 
+Removido a necessiade de autenticação para criar order e followup por fins práticos.
 
 ## EndPoints
 | Método | Caminho | Descrição | Requer Autenticação |
