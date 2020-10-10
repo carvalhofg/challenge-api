@@ -38,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/service-order")
 public class SeviceOrderController {
@@ -57,6 +59,7 @@ public class SeviceOrderController {
     @Autowired
     private TokenService tokenService;
 
+    @ApiOperation(value = "List All Orders")
     @GetMapping("/all")
     public List<DetailServiceOrderDTO> list() {
  
@@ -66,6 +69,7 @@ public class SeviceOrderController {
     }
 
     @GetMapping
+    @ApiOperation(value = "List Orders From Logged Responsible")
     public List<DetailServiceOrderDTO> listByResponsible(@RequestParam String responsibleName, HttpServletRequest request) {
         String token = tokenService.retrieveToken(request);
         Long idUsuario = tokenService.getUserId(token);
@@ -82,6 +86,7 @@ public class SeviceOrderController {
         }
     }
 
+    @ApiOperation(value = "Create a Service Order")
     @PostMapping
     @Transactional
     public ResponseEntity<ServiceOrderDTO> createServiceOrder(@RequestBody @Valid ServiceOrderForm form, UriComponentsBuilder uriBuilder) {
@@ -92,6 +97,7 @@ public class SeviceOrderController {
         return ResponseEntity.created(uri).body(new ServiceOrderDTO(serviceOrder));
     }
 
+    @ApiOperation(value = "Create a Service Order FollowUp")
     @PostMapping("/{idServiceOrder}/followup")
     @Transactional
     public ResponseEntity<OrderFollowUpDTO> responder(@PathVariable Long idServiceOrder, @RequestBody @Valid OrderFollowUpForm form, UriComponentsBuilder uriBuilder) {
@@ -104,6 +110,7 @@ public class SeviceOrderController {
         return ResponseEntity.created(uri).body(new OrderFollowUpDTO(orderFollowUp));
     }
 
+    @ApiOperation(value = "Update a Service Order")
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<DetailServiceOrderDTO> updateServiceOrder(@PathVariable Long id, @RequestBody @Valid UpdateServiceOrderForm form, HttpServletRequest request) {
@@ -126,6 +133,7 @@ public class SeviceOrderController {
         return ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "Delete a Service Order")
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> remove(@PathVariable Long id, HttpServletRequest request) {

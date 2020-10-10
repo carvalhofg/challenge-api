@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,6 +29,7 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
     
+    @ApiOperation(value = "Authenticate Responsibles")
     @PostMapping
     public ResponseEntity<TokenDTO> autenticar(@RequestBody @Valid LoginForm form) {
 

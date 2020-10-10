@@ -17,7 +17,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SwaggerConfig {
     @Bean
-    public Docket forumApi() {
+    public Docket challengeApi() {
         return new Docket(DocumentationType.SWAGGER_2)
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.api.challenge.challengeapi"))
@@ -28,7 +28,7 @@ public class SwaggerConfig {
                         Arrays.asList(
                                 new ParameterBuilder()
                                     .name("Authorization")
-                                    .description("Header para Token JWT")
+                                    .description("Header Token JWT")
                                     .modelRef(new ModelRef("string"))
                                     .parameterType("header")
                                     .required(false)
