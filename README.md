@@ -1,6 +1,8 @@
 # Challenge-Api
 
-API REST desenvolvida com Spring Boot.
+Desafio de desenvolvimento de API REST.
+
+API desenvolvida com Spring Boot.
 
 Executar a API:
 
