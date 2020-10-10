@@ -46,6 +46,20 @@ $ mvn spring-boot:run
 ```
 E acessar a url http://localhost:8080/swagger-ui.html
 
+### Enum Status da Ordem
+
+Existem 4 Status de uma Ordem de Serviço. Ela é atualizada via método PUT.
+
+Quando uma Ordem é criada ela já vem com Status REGISTERED.</br>
+
+Os 4 estados possíveis são:
+
++ REGISTERED;
++ RUNNING;
++ WAITINGFORPIECES;
++ FINISHED;
+
+
 ## Autenticação
 
 A API usa o Spring Security para segurança e faz autenticação via token do tipo Bearer.
