@@ -69,13 +69,13 @@ public class SeviceOrderController {
 
     @GetMapping
     @ApiOperation(value = "List Orders From Logged Responsible")
-    public List<DetailServiceOrderDTO> listByResponsible(@RequestParam String responsibleName, HttpServletRequest request) {
+    public List<DetailServiceOrderDTO> listByResponsible(HttpServletRequest request) {
         String token = tokenService.retrieveToken(request);
         Long idUsuario = tokenService.getUserId(token);
         String authenticatedResponsible = responsibleRepository.getOne(idUsuario).getName();
 
-        if(authenticatedResponsible.equals(responsibleName)){
-            List<ServiceOrder> serviceOrders = serviceOrderRepository.findByResponsibleName(responsibleName);
+        if(authenticatedResponsible != null){
+            List<ServiceOrder> serviceOrders = serviceOrderRepository.findByResponsibleName(authenticatedResponsible);
 
             return DetailServiceOrderDTO.convert(serviceOrders);
         } else {
