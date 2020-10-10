@@ -1,8 +1,6 @@
 package com.api.challenge.challengeapi;
 
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.MethodOrdererContext;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -15,8 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -60,16 +56,9 @@ class ChallengeApiApplicationTests {
 			String getResultContent = result.getResponse().getContentAsString();
 			token = getResultContent.substring(10,165);
 
-			mockMvc.perform(MockMvcRequestBuilders.get("/service-order").header("Authorization", "Bearer "+token)
-				.param("responsibleName", "Responsible1"))
+			mockMvc.perform(MockMvcRequestBuilders.get("/service-order").header("Authorization", "Bearer "+token))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.*", Matchers.hasSize(1)));
-
-			mockMvc.perform(MockMvcRequestBuilders.get("/service-order").header("Authorization", "Bearer "+token)
-				.param("responsibleName", "Responsible2"))
-				.andExpect(MockMvcResultMatchers.status().isForbidden());
-
-
 	}
 
 	@Test
@@ -155,13 +144,11 @@ class ChallengeApiApplicationTests {
 			String getResultContent = result.getResponse().getContentAsString();
 			token = getResultContent.substring(10,165);
 
-			mockMvc.perform(MockMvcRequestBuilders.delete("/service-order/1").header("Authorization", "Bearer "+token)
-				.param("responsibleName", "Responsible1"))
+			mockMvc.perform(MockMvcRequestBuilders.delete("/service-order/1").header("Authorization", "Bearer "+token))
 				.andExpect(MockMvcResultMatchers.status().isOk());
 
-			mockMvc.perform(MockMvcRequestBuilders.get("/service-order").header("Authorization", "Bearer "+token)
-				.param("responsibleName", "Responsible2"))
-				.andExpect(MockMvcResultMatchers.status().isForbidden());
+			mockMvc.perform(MockMvcRequestBuilders.delete("/service-order/2").header("Authorization", "Bearer "+token))
+			.andExpect(MockMvcResultMatchers.status().isForbidden());
 
 			mockMvc.perform(MockMvcRequestBuilders.get("/service-order/all"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
