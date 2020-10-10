@@ -42,7 +42,7 @@ Os Endpoints foram documentados no Swagger.
 
 Para Acessar, basta subir a aplicação executando o comando 
 ```
-mvn spring-boot:run
+$ mvn spring-boot:run
 ```
 E acessar a url http://localhost:8080/swagger-ui.html
 
