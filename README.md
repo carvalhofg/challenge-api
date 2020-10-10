@@ -63,9 +63,9 @@ passando no body, o username e password, como descrito na tabela acima.
 
 Ao fazer isso, é retornado um responseBody com o valor do token.
 
-Para acessar os endpoints que requerer autenticação, é necessário passar um header Authorization na requisição com a String:
+Para acessar os endpoints que requerer autenticação, é necessário passar um header Authorization na requisição com o valor:
 
-`Bearer codigoDoToken`
+`Bearer codigoDoTokenGerado`
 
 ## Testes automatizados
 
