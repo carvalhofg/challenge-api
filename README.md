@@ -50,7 +50,7 @@ A API usa o Spring Security para segurança e faz autenticação via token do ti
 
 Os Responsáveis que possuem acesso na API. O Responsible1 e Responsible2 possuem as seguintes credenciais:
 
-|  Responsável | Usuário | Senha |
+|  Responsável | Username | Password |
 | ------ | ----------- | ----------- |
 | Responsible1 | responsibleusr1 | 123456 |
 | Responsible2 | responsibleusr2 | 123456 |
@@ -59,7 +59,9 @@ Para gerar o token de acesso aos endpoints com restrição de acesso, é necess�
 
 `/auth`
 
-Ao fazer isso, é retornar um responseBody com o valor do token.
+passando no body, o username e password, como descrito na tabela acima.
+
+Ao fazer isso, é retornado um responseBody com o valor do token.
 
 Para acessar os endpoints que requerer autenticação, é necessário passar um header Authorization na requisição com a String:
 
